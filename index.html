@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+
+    <header class="app-header">
+      <div class="header-brand">
+        <span class="brand-dot"></span>
+        <span class="brand-name">Dashboard To Do List Apps</span>
+      </div>
+      <button id="theme-toggle" aria-label="Switch to dark mode">
+        <span id="theme-icon">☀️</span>
+      </button>
+    </header>
+
+    <main>
+
+      <!-- Greeting Widget -->
+      <section id="greeting-widget" class="widget">
+        <div class="widget-header">
+          <span class="widget-icon">🕐</span>
+          <h2 class="widget-title">Good to see you</h2>
+        </div>
+        <div id="clock" aria-live="polite"></div>
+        <div id="date-display"></div>
+        <div id="greeting-text"></div>
+        <div id="name-form" class="input-row">
+          <input id="name-input" type="text" maxlength="50" placeholder="What's your name?" autocomplete="off" />
+          <button id="name-save-btn" class="btn btn-primary">Save</button>
+          <span id="name-error" class="error-msg" role="alert"></span>
+        </div>
+      </section>
+
+      <!-- Timer Widget -->
+      <section id="timer-widget" class="widget">
+        <div class="widget-header">
+          <span class="widget-icon">⏱️</span>
+          <h2 class="widget-title">Pomodoro Timer</h2>
+        </div>
+        <div id="timer-display" aria-live="polite" aria-label="Timer">25:00</div>
+        <div id="timer-state-label">Ready</div>
+        <div id="timer-controls">
+          <button id="timer-start" class="btn btn-primary">▶ Start</button>
+          <button id="timer-stop"  class="btn btn-secondary">⏸ Pause</button>
+          <button id="timer-reset" class="btn btn-ghost">↺ Reset</button>
+        </div>
+        <div id="duration-form" class="input-row">
+          <input id="duration-input" type="number" min="1" max="120" placeholder="Minutes (1–120)" />
+          <button id="duration-save-btn" class="btn btn-secondary">Set</button>
+          <span id="duration-error" class="error-msg" role="alert"></span>
+        </div>
+      </section>
+
+      <!-- Task Manager -->
+      <section id="task-manager" class="widget">
+        <div class="widget-header">
+          <span class="widget-icon">✅</span>
+          <h2 class="widget-title">Tasks</h2>
+          <span id="task-count" class="badge">0</span>
+        </div>
+        <div id="task-input-area" class="input-row">
+          <input id="task-input" type="text" maxlength="255" placeholder="Add a new task…" autocomplete="off" />
+          <button id="task-add-btn" class="btn btn-primary">Add</button>
+          <span id="task-add-error" class="error-msg" role="alert"></span>
+        </div>
+        <div id="sort-controls">
+          <label for="sort-select" class="sort-label">Sort:</label>
+          <select id="sort-select">
+            <option value="creation">Default (oldest first)</option>
+            <option value="active-first">Active first</option>
+            <option value="completed-first">Completed first</option>
+          </select>
+        </div>
+        <ul id="task-list" aria-label="Task list"></ul>
+        <p id="task-empty" class="empty-state">No tasks yet. Add one above!</p>
+      </section>
+
+      <!-- Quick Links -->
+      <section id="quick-links" class="widget">
+        <div class="widget-header">
+          <span class="widget-icon">🔗</span>
+          <h2 class="widget-title">Quick Links</h2>
+          <span id="links-count" class="badge">0</span>
+        </div>
+        <div id="links-grid" aria-label="Saved links"></div>
+        <p id="links-empty" class="empty-state">No links yet. Add one below!</p>
+        <div id="add-link-form" class="link-form">
+          <div class="input-row">
+            <input id="link-label-input" type="text" maxlength="50" placeholder="Label (e.g. GitHub)" autocomplete="off" />
+            <input id="link-url-input" type="url" maxlength="2048" placeholder="https://example.com" autocomplete="off" />
+          </div>
+          <div class="input-row">
+            <button id="link-add-btn" class="btn btn-primary btn-full">Add Link</button>
+            <span id="link-error" class="error-msg" role="alert"></span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <script src="js/app.js" defer></script>
+  </body>
+</html>

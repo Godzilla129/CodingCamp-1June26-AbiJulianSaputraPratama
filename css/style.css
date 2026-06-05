@@ -1,0 +1,789 @@
+/* ============================================================
+   New Tab Dashboard — css/style.css
+   Pure vanilla CSS — no frameworks, no libraries
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. Design Tokens — Light Mode
+   ------------------------------------------------------------ */
+:root {
+  /* Palette */
+  --bg:            #f4f6fb;
+  --bg-alt:        #eceef5;
+  --surface:       #ffffff;
+  --surface-2:     #f8f9fc;
+  --text:          #16172b;
+  --text-muted:    #7c82a3;
+  --text-faint:    #b0b5cc;
+  --border:        #e2e5f0;
+  --border-focus:  #4f6ef7;
+
+  /* Brand */
+  --primary:        #4f6ef7;
+  --primary-hover:  #3a57e8;
+  --primary-light:  rgba(79, 110, 247, 0.12);
+  --secondary:      #6c757d;
+  --secondary-hover:#545b62;
+  --success:        #22c55e;
+  --error:          #ef4444;
+  --error-bg:       rgba(239, 68, 68, 0.08);
+  --warning:        #f59e0b;
+
+  /* Surfaces */
+  --shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg:   0 10px 40px rgba(0, 0, 0, 0.12);
+
+  /* Geometry */
+  --radius-xs:  4px;
+  --radius-sm:  8px;
+  --radius:     14px;
+  --radius-lg:  20px;
+
+  /* Motion */
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+  --duration:   0.18s;
+}
+
+/* ------------------------------------------------------------
+   2. Dark Mode Tokens
+   ------------------------------------------------------------ */
+html.dark {
+  --bg:            #0d0f1a;
+  --bg-alt:        #131525;
+  --surface:       #181b2e;
+  --surface-2:     #1e2235;
+  --text:          #e8eaf6;
+  --text-muted:    #6b7094;
+  --text-faint:    #3e4260;
+  --border:        #252840;
+  --border-focus:  #6b8cff;
+
+  --primary:        #6b8cff;
+  --primary-hover:  #8aa4ff;
+  --primary-light:  rgba(107, 140, 255, 0.15);
+  --error:          #f87171;
+  --error-bg:       rgba(248, 113, 113, 0.1);
+  --success:        #4ade80;
+
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg:  0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* OS dark preference fallback */
+@media (prefers-color-scheme: dark) {
+  html:not([class]) {
+    --bg:            #0d0f1a;
+    --bg-alt:        #131525;
+    --surface:       #181b2e;
+    --surface-2:     #1e2235;
+    --text:          #e8eaf6;
+    --text-muted:    #6b7094;
+    --text-faint:    #3e4260;
+    --border:        #252840;
+    --border-focus:  #6b8cff;
+    --primary:        #6b8cff;
+    --primary-hover:  #8aa4ff;
+    --primary-light:  rgba(107, 140, 255, 0.15);
+    --error:          #f87171;
+    --error-bg:       rgba(248, 113, 113, 0.1);
+    --success:        #4ade80;
+    --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg:  0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ------------------------------------------------------------
+   3. Reset & Base
+   ------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--duration) var(--ease),
+              color var(--duration) var(--ease);
+}
+
+/* ------------------------------------------------------------
+   4. Header
+   ------------------------------------------------------------ */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #a78bfa);
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* ------------------------------------------------------------
+   5. Theme Toggle
+   ------------------------------------------------------------ */
+#theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--text);
+  transition: background-color var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              transform var(--duration) var(--ease);
+}
+
+#theme-toggle:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+#theme-icon {
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+/* ------------------------------------------------------------
+   6. Main Grid
+   ------------------------------------------------------------ */
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 24px 48px;
+}
+
+/* ------------------------------------------------------------
+   7. Widget Cards
+   ------------------------------------------------------------ */
+.widget {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background-color var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              box-shadow var(--duration) var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), #a78bfa);
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.widget:hover::before {
+  opacity: 1;
+}
+
+/* Widget header row */
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.widget-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.widget-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+/* Badge (task/link count) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: background-color var(--duration) var(--ease);
+}
+
+/* ------------------------------------------------------------
+   8. Greeting Widget
+   ------------------------------------------------------------ */
+#clock {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+#date-display {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+#greeting-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+/* ------------------------------------------------------------
+   9. Timer Widget
+   ------------------------------------------------------------ */
+#timer-widget {
+  text-align: center;
+}
+
+#timer-display {
+  font-size: 4rem;
+  font-weight: 800;
+  font-family: "SF Mono", "Fira Code", "Consolas", "Courier New", monospace;
+  letter-spacing: 4px;
+  line-height: 1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  border: 1px solid var(--border);
+  transition: color var(--duration) var(--ease),
+              background-color var(--duration) var(--ease);
+}
+
+#timer-display.running {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+#timer-display.complete {
+  color: var(--success);
+}
+
+#timer-state-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+#timer-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#duration-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+/* ------------------------------------------------------------
+   10. Task Manager
+   ------------------------------------------------------------ */
+#sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+#task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+#task-list::-webkit-scrollbar {
+  width: 4px;
+}
+#task-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+#task-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--surface-2);
+  transition: opacity var(--duration) var(--ease),
+              background-color var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              transform var(--duration) var(--ease);
+}
+
+.task-item:hover {
+  background-color: var(--bg-alt);
+  border-color: var(--text-faint);
+  transform: translateX(2px);
+}
+
+.task-check {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.task-title {
+  flex: 1;
+  font-size: 0.9rem;
+  word-break: break-word;
+  color: var(--text);
+}
+
+/* Completed task */
+.task-item.completed {
+  opacity: 0.5;
+}
+
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Inline edit input */
+.task-edit-input {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  padding: 12px 0;
+}
+
+.empty-state.hidden {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   11. Quick Links
+   ------------------------------------------------------------ */
+#links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 0;
+}
+
+.link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  animation: fadeIn 0.2s var(--ease);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 0.825rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: background-color var(--duration) var(--ease),
+              color var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              transform var(--duration) var(--ease);
+  white-space: nowrap;
+}
+
+.link-btn:hover {
+  background-color: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.link-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  border-radius: 50%;
+  transition: color var(--duration) var(--ease),
+              background-color var(--duration) var(--ease);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.link-delete-btn:hover {
+  color: var(--error);
+  background-color: var(--error-bg);
+}
+
+.link-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* ------------------------------------------------------------
+   12. Shared Input Row
+   ------------------------------------------------------------ */
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+/* ------------------------------------------------------------
+   13. Buttons
+   ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  white-space: nowrap;
+  transition: background-color var(--duration) var(--ease),
+              color var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              transform var(--duration) var(--ease),
+              opacity var(--duration) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn-secondary:hover {
+  background-color: var(--bg-alt);
+  border-color: var(--text-faint);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+.btn-ghost:hover {
+  background-color: var(--bg-alt);
+  color: var(--text);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Task action buttons */
+.task-edit-btn,
+.task-delete-btn,
+.task-edit-confirm,
+.task-edit-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  color: var(--text-faint);
+  padding: 4px 7px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  font-family: inherit;
+  transition: color var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              background-color var(--duration) var(--ease);
+  flex-shrink: 0;
+}
+
+.task-edit-btn:hover,
+.task-edit-confirm:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.task-delete-btn:hover,
+.task-edit-cancel:hover {
+  color: var(--error);
+  border-color: var(--error);
+  background-color: var(--error-bg);
+}
+
+/* ------------------------------------------------------------
+   14. Inputs & Select
+   ------------------------------------------------------------ */
+input[type="text"],
+input[type="number"],
+input[type="url"],
+select {
+  background-color: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  outline: none;
+  min-width: 0;
+  transition: border-color var(--duration) var(--ease),
+              box-shadow var(--duration) var(--ease),
+              background-color var(--duration) var(--ease);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus,
+select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background-color: var(--surface);
+}
+
+input::placeholder {
+  color: var(--text-faint);
+}
+
+select {
+  cursor: pointer;
+  appearance: auto;
+  flex: 1;
+}
+
+/* Flexible inputs */
+#name-input,
+#task-input,
+#link-label-input,
+#link-url-input {
+  flex: 1;
+  min-width: 120px;
+}
+
+#duration-input {
+  width: 140px;
+  flex: none;
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: var(--primary);
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------
+   15. Error Messages
+   ------------------------------------------------------------ */
+.error-msg {
+  color: var(--error);
+  font-size: 0.78rem;
+  font-weight: 500;
+  width: 100%;
+  min-height: 1.1em;
+  display: block;
+  padding-top: 2px;
+}
+
+.task-edit-error {
+  color: var(--error);
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+}
+
+/* ------------------------------------------------------------
+   16. Responsive
+   ------------------------------------------------------------ */
+@media (max-width: 700px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  main {
+    grid-template-columns: 1fr;
+    padding: 16px 16px 40px;
+    gap: 16px;
+  }
+
+  #clock {
+    font-size: 3rem;
+  }
+
+  #timer-display {
+    font-size: 3rem;
+    letter-spacing: 2px;
+  }
+
+  #timer-controls {
+    justify-content: stretch;
+  }
+
+  #timer-controls .btn {
+    flex: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Greeting widget spans full width on wide screens */
+  #greeting-widget {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  #greeting-widget .widget-header {
+    display: none; /* clock IS the header on wide */
+  }
+
+  #clock {
+    font-size: 5rem;
+  }
+
+  #greeting-text {
+    font-size: 1.6rem;
+  }
+}
